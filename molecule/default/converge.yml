@@ -10,7 +10,7 @@
         state: latest
         update_cache: true
   roles:
-#    - { role: andrewrothstein.cfssl }
+    - { role: andrewrothstein.cfssl }
   tasks:
     - name: "Include cloud_labs.etcd_cluster_certificates"
       include_role:
