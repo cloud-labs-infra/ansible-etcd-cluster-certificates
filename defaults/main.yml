@@ -1,0 +1,111 @@
+---
+
+etcd_cert_user: root
+etcd_cert_group: root
+etcd_cert_dir: /etc/ssl/private/
+
+## CA configuration
+
+#etcd_cert_ca_cert_path:
+#etcd_cert_ca_key_path:
+#etcd_cert_ca_config_path:
+etcd_cert_expiry: 43800h
+etcd_cert_ca_config:
+  signing:
+    default:
+      expiry: "{{ etcd_cert_expiry }}"
+    profiles:
+      client:
+        expiry: "{{ etcd_cert_expiry }}"
+        usages:
+          - signing
+          - key encipherment
+          - client auth
+      peer:
+        expiry: "{{ etcd_cert_expiry }}"
+        usages:
+          - signing
+          - key encipherment
+          - server auth
+          - client auth
+      server:
+        expiry: "{{ etcd_cert_expiry }}"
+        usages:
+          - signing
+          - key encipherment
+          - server auth
+
+etcd_cert_ca_csr:
+  CN: "private CA"
+  key:
+    algo: rsa
+    size: 2048
+  names:
+    - C: RU
+      L: Moscow
+      O: Organization
+      OU: Organizational Unit
+      ST: Moscow region
+
+
+## Server certificates
+
+#etcd_cert_server_profile_name:
+#etcd_cert_server_csr_path:
+#etcd_cert_server_output_name:
+etcd_cert_server_hosts:
+  - "{{ inventory_hostname }}"
+  - "{{ ansible_default_ipv4.address }}"
+etcd_cert_server_csr:
+  CN: "{{ inventory_hostname }}"
+  hosts: "{{ etcd_cert_server_hosts }}"
+  key:
+    algo: ecdsa
+    size: 256
+  names:
+    - C: RU
+      L: Moscow
+      O: Organization
+      OU: Organizational Unit
+      ST: Moscow region
+
+
+## Peer certificates
+
+#etcd_cert_peer_profile_name:
+#etcd_cert_peer_csr_path:
+#etcd_cert_peer_output_name:
+etcd_cert_peer_hosts:
+  - "{{ inventory_hostname }}"
+  - "{{ ansible_default_ipv4.address }}"
+etcd_cert_peer_csr:
+  CN: "{{ inventory_hostname }}"
+  hosts: "{{ etcd_cert_peer_hosts }}"
+  key:
+    algo: ecdsa
+    size: 256
+  names:
+    - C: RU
+      L: Moscow
+      O: Organization
+      OU: Organizational Unit
+      ST: Moscow region
+
+
+## Client certificates
+
+#etcd_cert_client_profile_name:
+#etcd_cert_client_csr_path:
+#etcd_cert_client_output_name:
+etcd_cert_client_csr:
+  CN: client
+  hosts: []
+  key:
+    algo: ecdsa
+    size: 256
+  names:
+    - C: RU
+      L: Moscow
+      O: Organization
+      OU: Organizational Unit
+      ST: Moscow region

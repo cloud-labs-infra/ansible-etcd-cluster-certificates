@@ -1,0 +1,20 @@
+# generate-ca.yml
+---
+
+- name: Copy CA configuration
+  ansible.builtin.template:
+    src: "{{ item }}.j2"
+    dest: '{{ etcd_cert_dir }}/{{ item }}'
+    owner: '{{ etcd_cert_user }}'
+    group: '{{ etcd_cert_group }}'
+    mode: 0644
+  loop:
+    - ca-csr.json
+    - ca-config.json
+
+- name: Generate CA certificates
+  ansible.builtin.shell: |
+    cfssl gencert \
+        -initca ca-csr.json | cfssljson -bare ca -
+  args:
+      chdir: "{{ etcd_cert_dir }}"
