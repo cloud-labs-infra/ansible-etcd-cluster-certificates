@@ -1,5 +1,9 @@
 ---
 
+- name: Preflight checks
+  ansible.builtin.include_tasks:
+    file: preflight.yml
+
 - name: Generate CA certificates
   ansible.builtin.include_tasks:
     file: generate-ca.yml
