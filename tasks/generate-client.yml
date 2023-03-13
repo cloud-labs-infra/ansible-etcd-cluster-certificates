@@ -18,6 +18,6 @@
         -ca-key={{ etcd_cert_ca_key_path | default('ca-key.pem') }} \
         -config={{ etcd_cert_ca_config_path | default('ca-config.json') }} \
         -profile={{ etcd_cert_client_profile_name | default('client') }} \
-        {{ etcd_cert_client_csr_path | default('client.json') }} | cfssljson -bare {{ etcd_cert_client_output_name | default('client') }}
+        client.json | cfssljson -bare {{ etcd_cert_client_output_name | default('client') }}
   args:
     chdir: "{{ etcd_cert_dir }}"

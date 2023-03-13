@@ -51,7 +51,6 @@ etcd_cert_ca_csr:
 ## Server certificates
 
 #etcd_cert_server_profile_name:
-#etcd_cert_server_csr_path:
 #etcd_cert_server_output_name:
 etcd_cert_server_hosts:
   - "{{ inventory_hostname }}"
@@ -73,7 +72,6 @@ etcd_cert_server_csr:
 ## Peer certificates
 
 #etcd_cert_peer_profile_name:
-#etcd_cert_peer_csr_path:
 #etcd_cert_peer_output_name:
 etcd_cert_peer_hosts:
   - "{{ inventory_hostname }}"
@@ -95,7 +93,6 @@ etcd_cert_peer_csr:
 ## Client certificates
 
 #etcd_cert_client_profile_name:
-#etcd_cert_client_csr_path:
 #etcd_cert_client_output_name:
 etcd_cert_client_csr:
   CN: client
