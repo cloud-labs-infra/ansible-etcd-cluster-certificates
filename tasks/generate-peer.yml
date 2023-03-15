@@ -11,6 +11,11 @@
   loop:
     - peer.json
 
+- name: Check if peer certificate exists
+  ansible.builtin.stat:
+    path: "{{ etcd_cert_dir }}/{{ etcd_cert_peer_output_name | default('peer') }}.pem"
+  register: peer_cert
+
 - name: Generate peer (member) certificates
   ansible.builtin.shell: |
     cfssl gencert \
@@ -21,3 +26,4 @@
         peer.json | cfssljson -bare {{ etcd_cert_peer_output_name | default('peer') }}
   args:
     chdir: "{{ etcd_cert_dir }}"
+  when: not peer_cert.stat.exists

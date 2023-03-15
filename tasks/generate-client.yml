@@ -11,6 +11,11 @@
   loop:
     - client.json
 
+- name: Check if client certificate exists
+  ansible.builtin.stat:
+    path: "{{ etcd_cert_dir }}/{{ etcd_cert_client_output_name | default('client') }}.pem"
+  register: client_cert
+
 - name: Generate client certificates
   ansible.builtin.shell: |
     cfssl gencert \
@@ -21,3 +26,4 @@
         client.json | cfssljson -bare {{ etcd_cert_client_output_name | default('client') }}
   args:
     chdir: "{{ etcd_cert_dir }}"
+  when: not client_cert.stat.exists
