@@ -16,13 +16,6 @@
           or
         etcd_cert_ca_key_path is defined
 
-    - name: Check config
-      ansible.builtin.assert:
-        that:
-          - etcd_cert_ca_config_path != ""
-        fail_msg: Config path is empty
-      when: etcd_cert_ca_config_path is defined
-
 - name: Server checks
   block:
     - name: Check server profile
