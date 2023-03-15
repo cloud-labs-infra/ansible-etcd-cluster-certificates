@@ -14,8 +14,8 @@
 - name: Generate client certificates
   ansible.builtin.shell: |
     cfssl gencert \
-        -ca={{ etcd_cert_ca_cert_path | default('ca.pem') }} \
-        -ca-key={{ etcd_cert_ca_key_path | default('ca-key.pem') }} \
+        -ca={{ etcd_cert_ca_cert_remote_path | default('ca.pem') }} \
+        -ca-key={{ etcd_cert_ca_key_remote_path | default('ca-key.pem') }} \
         -config=ca-config.json \
         -profile={{ etcd_cert_client_profile_name | default('client') }} \
         client.json | cfssljson -bare {{ etcd_cert_client_output_name | default('client') }}

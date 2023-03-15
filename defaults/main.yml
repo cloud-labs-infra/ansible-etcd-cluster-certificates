@@ -6,8 +6,8 @@ etcd_cert_dir: /etc/ssl/private/
 
 ## CA configuration
 
-#etcd_cert_ca_cert_path:
-#etcd_cert_ca_key_path:
+#etcd_cert_ca_cert_remote_path:
+#etcd_cert_ca_key_remote_path:
 etcd_cert_expiry: 43800h
 etcd_cert_ca_config:
   signing:
