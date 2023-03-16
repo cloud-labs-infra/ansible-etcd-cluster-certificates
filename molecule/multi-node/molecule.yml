@@ -1,0 +1,23 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+platforms:
+  - &default
+    name: etcd-cert-instance-01
+    hostname: etcd-cert-instance-01
+    image: python:3.8-bullseye
+    groups:
+      - etcd
+    pre_build_image: true
+  - <<: *default
+    name: etcd-cert-instance-02
+    hostname: etcd-cert-instance-02
+  - <<: *default
+    name: etcd-cert-instance-03
+    hostname: etcd-cert-instance-03
+provisioner:
+  name: ansible
+verifier:
+  name: ansible
