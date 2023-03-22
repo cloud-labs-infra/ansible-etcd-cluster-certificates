@@ -50,8 +50,8 @@ etcd_cert_ca_csr:
 
 ## Server certificates
 
-#etcd_cert_server_profile_name:
-#etcd_cert_server_output_name:
+etcd_cert_server_profile_name: server
+etcd_cert_server_output_name: "{{ etcd_cert_server_profile_name }}"
 etcd_cert_server_hosts:
   - "{{ inventory_hostname }}"
   - "{{ ansible_default_ipv4.address }}"
@@ -71,8 +71,8 @@ etcd_cert_server_csr:
 
 ## Peer certificates
 
-#etcd_cert_peer_profile_name:
-#etcd_cert_peer_output_name:
+etcd_cert_peer_profile_name: peer
+etcd_cert_peer_output_name: "{{ etcd_cert_peer_profile_name }}"
 etcd_cert_peer_hosts:
   - "{{ inventory_hostname }}"
   - "{{ ansible_default_ipv4.address }}"
@@ -92,8 +92,8 @@ etcd_cert_peer_csr:
 
 ## Client certificates
 
-#etcd_cert_client_profile_name:
-#etcd_cert_client_output_name:
+etcd_cert_client_profile_name: client
+etcd_cert_client_output_name: "{{ etcd_cert_client_profile_name }}"
 etcd_cert_client_csr:
   CN: client
   hosts: []

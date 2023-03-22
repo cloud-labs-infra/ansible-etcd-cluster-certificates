@@ -2,10 +2,6 @@
 - name: Converge
   hosts: all
   become_method: su
-  vars:
-    etcd_cert_server_profile_name: server
-    etcd_cert_peer_profile_name: peer
-    etcd_cert_client_profile_name: client
   pre_tasks:
     - name: Install prerequisites
       ansible.builtin.apt:
@@ -14,7 +10,7 @@
         state: latest
         update_cache: true
   roles:
-#    - { role: andrewrothstein.cfssl }
+    - { role: andrewrothstein.cfssl }
   tasks:
     - name: "Include cloud_labs.etcd_cluster_certificates"
       include_role:

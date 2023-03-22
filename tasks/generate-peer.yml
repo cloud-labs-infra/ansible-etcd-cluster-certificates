@@ -22,8 +22,8 @@
         -ca={{ etcd_cert_ca_cert_remote_path | default('ca.pem') }} \
         -ca-key={{ etcd_cert_ca_key_remote_path | default('ca-key.pem') }} \
         -config=ca-config.json \
-        -profile={{ etcd_cert_peer_profile_name | default('peer') }} \
-        peer.json | cfssljson -bare {{ etcd_cert_peer_output_name | default('peer') }}
+        -profile={{ etcd_cert_peer_profile_name }} \
+        peer.json | cfssljson -bare {{ etcd_cert_peer_output_name }}
   args:
     chdir: "{{ etcd_cert_dir }}"
   when: not peer_cert.stat.exists
