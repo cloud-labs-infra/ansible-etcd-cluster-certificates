@@ -1,7 +1,29 @@
 Role Name
 =========
 
-Ansible role to create and manage SSL certificates on single or multi-node ETCD setup. [CFSSL](https://github.com/cloudflare/cfssl) now is the only supported certificate provider. 
+Ansible role to create and manage SSL certificates on single or multi-node ETCD setup. [CFSSL](https://github.com/cloudflare/cfssl) now is the only supported certificate provider.
+
+Role generates the following certificates bunch on each host:
+
+```text
+# ls -1 /etc/ssl/private
+ca-config.json
+ca-csr.json
+ca-key.pem
+ca.pem
+client-key.pem
+client.csr
+client.json
+client.pem
+peer-key.pem
+peer.csr
+peer.json
+peer.pem
+server-key.pem
+server.csr
+server.json
+server.pem
+``` 
 
 Requirements
 ------------
