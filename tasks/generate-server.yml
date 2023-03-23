@@ -1,0 +1,29 @@
+# generate-server.yml
+---
+
+- name: Copy server configuration
+  ansible.builtin.template:
+    src: "{{ item }}.j2"
+    dest: '{{ etcd_cert_dir }}/{{ item }}'
+    owner: '{{ etcd_cert_user }}'
+    group: '{{ etcd_cert_group }}'
+    mode: 0644
+  loop:
+    - server.json
+
+- name: Check if Server certificate exists
+  ansible.builtin.stat:
+    path: "{{ etcd_cert_dir }}/{{ etcd_cert_server_output_name | default('server') }}.pem"
+  register: server_cert
+
+- name: Generate server certificates
+  ansible.builtin.shell: |
+    cfssl gencert \
+        -ca={{ etcd_cert_ca_cert_remote_path | default('ca.pem') }} \
+        -ca-key={{ etcd_cert_ca_key_remote_path | default('ca-key.pem') }} \
+        -config=ca-config.json \
+        -profile={{ etcd_cert_server_profile_name }} \
+        server.json | cfssljson -bare {{ etcd_cert_server_output_name }}
+  args:
+    chdir: "{{ etcd_cert_dir }}"
+  when: not server_cert.stat.exists

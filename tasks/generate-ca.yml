@@ -1,0 +1,51 @@
+# generate-ca.yml
+---
+
+- name: Copy CA configuration
+  ansible.builtin.template:
+    src: "{{ item }}.j2"
+    dest: '{{ etcd_cert_dir }}/{{ item }}'
+    owner: '{{ etcd_cert_user }}'
+    group: '{{ etcd_cert_group }}'
+    mode: 0644
+  loop:
+    - ca-csr.json
+    - ca-config.json
+
+- name: Generate CA certificate on the first node of {{ etcd_cert_default_inventory_group_name }} inventory group
+  block:
+    - name: Check if CA certificate exists
+      ansible.builtin.stat:
+        path: "{{ etcd_cert_dir }}/ca.pem"
+      register: ca_cert
+
+    - name: Generate CA certificates
+      ansible.builtin.shell: |
+        cfssl gencert \
+            -initca ca-csr.json | cfssljson -bare ca -
+      args:
+        chdir: "{{ etcd_cert_dir }}"
+      when: not ca_cert.stat.exists
+  delegate_to: "{{ groups[etcd_cert_default_inventory_group_name][0] }}"
+  when: inventory_hostname == groups[etcd_cert_default_inventory_group_name][0]
+
+- name: Fetch CA certificate key pair from the remote with reference to other hosts
+  ansible.builtin.slurp:
+    src: "{{ etcd_cert_dir }}/{{ item }}"
+  loop:
+    - ca.pem
+    - ca-key.pem
+  register: etcd_ca_certs
+  delegate_to: "{{ groups[etcd_cert_default_inventory_group_name][0] }}"
+
+- name: Copy CA cert to each host except first in {{ etcd_cert_default_inventory_group_name }} inventory group
+  ansible.builtin.copy:
+    content: "{{ item.content | b64decode }}"
+    dest: "{{ etcd_cert_dir }}/{{ item.item }}"
+    owner: '{{ etcd_cert_user }}'
+    group: '{{ etcd_cert_group }}'
+    mode: 0600
+  loop: "{{ etcd_ca_certs.results }}"
+  loop_control:
+    label: "{{ item.item }}"
+  when: inventory_hostname != groups[etcd_cert_default_inventory_group_name][0]
