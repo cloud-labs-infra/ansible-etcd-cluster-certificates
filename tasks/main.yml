@@ -7,19 +7,10 @@
 - name: Generate CA certificates
   ansible.builtin.include_tasks:
     file: generate-ca.yml
-  when: |
-    ( etcd_cert_ca_cert_remote_path is not defined )
-    and
-    ( etcd_cert_ca_key_remote_path is not defined)
-
-- name: Generate client-to-server (server) certificates
-  ansible.builtin.include_tasks:
-    file: generate-server.yml
-
-- name: Generate server-to-server (peer/member) certificates
-  ansible.builtin.include_tasks:
-    file: generate-peer.yml
+  when:
+    - etcd_cert_ca_cert_remote_path is not defined
+    - etcd_cert_ca_key_remote_path is not defined
 
 - name: Generate client certificates
   ansible.builtin.include_tasks:
-    file: generate-client.yml
+    file: generate-certs.yml
