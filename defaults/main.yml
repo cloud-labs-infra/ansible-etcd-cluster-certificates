@@ -50,7 +50,7 @@ etcd_cert_ca_csr:
 etcd_cert_matrix:
   - profile_name: server
     output_name: server
-    csr: #&default_csr
+    csr: &default_csr
       CN: "{{ inventory_hostname }}"
       hosts:
         - "{{ inventory_hostname }}"
@@ -67,30 +67,10 @@ etcd_cert_matrix:
   - profile_name: peer
     output_name: peer
     csr:
-      CN: "{{ inventory_hostname }}"
-      hosts:
-        - "{{ inventory_hostname }}"
-        - "{{ ansible_default_ipv4.address }}"
-      key:
-        algo: ecdsa
-        size: 256
-      names:
-        - C: RU
-          L: Moscow
-          O: Organization
-          OU: Organizational Unit
-          ST: Moscow region
+      <<: *default_csr
   - profile_name: client
     output_name: client
     csr:
+      <<: *default_csr
       CN: client
       hosts: []
-      key:
-        algo: ecdsa
-        size: 256
-      names:
-        - C: RU
-          L: Moscow
-          O: Organization
-          OU: Organizational Unit
-          ST: Moscow region
