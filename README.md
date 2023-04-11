@@ -1,7 +1,7 @@
 ansible-etcd-cluster-certificates
 =========
 
-Ansible role to create and manage SSL certificates on single or multi-node ETCD setup. [CFSSL](https://github.com/cloudflare/cfssl) now is the only supported certificate provider.
+Ansible role to create and manage SSL certificates on single or multi-node ETCD setup. [CFSSL](https://github.com/cloudflare/cfssl) now is the only supported certificate provider. Read more about ETCD TLS support at [Transport security model](https://etcd.io/docs/v3.5/op-guide/security/) and [Generate self-signed certificates](https://github.com/coreos/docs/blob/master/os/generate-self-signed-certificates.md)
 
 Role generates the following certificates bunch on each host:
 
