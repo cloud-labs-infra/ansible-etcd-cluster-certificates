@@ -47,17 +47,7 @@ All variables are defined as defaults in [defaults/main.yml](defaults/main.yml) 
 |`etcd_cert_expiry`|43800h|Certificate expiry in hours|
 |`etcd_cert_ca_config`|See [defaults/main.yml](defaults/main.yml)|CA config with all required certificate profiles|
 |`etcd_cert_ca_csr`|See [defaults/main.yml](defaults/main.yml)|CA Certificate Signing Request (CSR)|
-|`etcd_cert_server_profile_name`|server|Profile name to generate server certificate pair.<br><br>Should be included in CA config. There is a preflight check of that condition|
-|`etcd_cert_server_output_name`|{{etcd_cert_server_profile_name}}|Output server certificate files prefix. <br><br>Final names will be the following:<br>{{etcd_cert_server_output_name}}-key.pem<br>{{etcd_cert_server_output_name}}.csr<br>{{etcd_cert_server_output_name}}.pem|
-|`etcd_cert_server_hosts`|- "{{inventory_hostname}}"<br>- "{{ansible_default_ipv4.address}}"|Ip addresses or DNS names included into SAN field of server certificate|
-|`etcd_cert_server_csr`|See [defaults/main.yml](defaults/main.yml)|Server Certificate Signing Request (CSR)|
-|`etcd_cert_peer_profile_name`|peer|Profile name to generate peer certificate pair.<br><br>Should be included in CA config. There is a preflight check of that condition|
-|`etcd_cert_peer_output_name`|{{etcd_cert_peer_profile_name}}|Output peer certificate files prefix.<br><br>Final names will be the following:<br>{{etcd_cert_peer_output_name}}-key.pem<br>{{etcd_cert_peer_output_name}}.csr<br>{{etcd_cert_peer_output_name}}.pem|
-|`etcd_cert_peer_hosts`|- "{{inventory_hostname}}"<br>- "{{ansible_default_ipv4.address}}"|Ip addresses or DNS names included into SAN field of peer certificate|
-|`etcd_cert_peer_csr`|See [defaults/main.yml](defaults/main.yml)|Peer Certificate Signing Request (CSR)|
-|`etcd_cert_client_profile_name`|client|Profile name to generate client certificate pair.<br><br>Should be included in CA config. There is a preflight check of that condition|
-|`etcd_cert_client_output_name`|{{etcd_cert_client_profile_name}}|Output client certificate files prefix.<br><br>Final names will be the following:<br>{{etcd_cert_client_output_name}}-key.pem<br>{{etcd_cert_client_output_name}}.csr<br>{{etcd_cert_client_output_name}}.pem|
-|`etcd_cert_client_csr`|See [defaults/main.yml](defaults/main.yml)|Client Certificate Signing Request (CSR)|
+|`etcd_cert_matrix`|See [defaults/main.yml](defaults/main.yml)|A list with three mandatory fields:<br/>- `profile_name` - name of certificate profile from `etcd_cert_ca_config` variable<br/>- `output_name` - output certificate file names<br/>- `csr` - a SCR in yaml format, will be converted in json<br/><br/>Output file names will be the following:<br>`{{output_name}}-key.pem`<br>`{{output_name}}.csr`<br>`{{output_name}}.pem`|
 
 Dependencies
 ------------
