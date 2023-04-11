@@ -45,7 +45,7 @@ All variables are defined as defaults in [defaults/main.yml](defaults/main.yml) 
 |`etcd_cert_ca_cert_remote_path`|-|A path to the CA certificate on the remote node (not in Ansible play host).<br/><br/>CA certificate should be copied to the remote node in advance|
 |`etcd_cert_ca_key_remote_path`|-|A path to the CA key on the remote node (not in Ansible play host).<br/><br/>CA key should be copied to the remote node in advance|
 |`etcd_cert_expiry`|43800h|Certificate expiry in hours|
-|`etcd_cert_ca_config`|See [defaults/main.yml](defaults/main.yml)|CA config with all required certificate profiles|
+|`etcd_cert_ca_config`|See [defaults/main.yml](defaults/main.yml)|CA config with all required certificate profiles.<br><br>Certificates should include appropriate X509v3 certificate extentions depending on usage type (client, server or peer). Read more at [Transport security model](https://etcd.io/docs/v3.5/op-guide/security/) and [Standard X.509 v3 Certificate Extension Reference](https://access.redhat.com/documentation/ru-ru/red_hat_certificate_system/9/html/administration_guide/standard_x.509_v3_certificate_extensions#Standard_X.509_v3_Certificate_Extensions-extKeyUsage) |
 |`etcd_cert_ca_csr`|See [defaults/main.yml](defaults/main.yml)|CA Certificate Signing Request (CSR)|
 |`etcd_cert_matrix`|See [defaults/main.yml](defaults/main.yml)|A list with three mandatory fields:<br/>- `profile_name` - name of certificate profile from `etcd_cert_ca_config` variable<br/>- `output_name` - output certificate file names<br/>- `csr` - a SCR in yaml format, will be converted in json<br/><br/>Output file names will be the following:<br>`{{output_name}}-key.pem`<br>`{{output_name}}.csr`<br>`{{output_name}}.pem`|
 
