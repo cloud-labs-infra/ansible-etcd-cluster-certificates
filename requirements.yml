@@ -1,2 +1,5 @@
+# requirements.yml
+---
+
 - name: andrewrothstein.cfssl
   version: v3.1.1
