@@ -16,29 +16,8 @@
           or
         etcd_cert_ca_key_remote_path is defined
 
-- name: Server checks
-  block:
-    - name: Check server profile
-      ansible.builtin.assert:
-        that:
-          - etcd_cert_server_profile_name in etcd_cert_ca_config.signing.profiles
-        fail_msg: "Server profile with name {{ etcd_cert_server_profile_name }} is not defined in config"
-      when: etcd_cert_server_profile_name is defined
-
-- name: Peer checks
-  block:
-    - name: Check peer profile
-      ansible.builtin.assert:
-        that:
-          - etcd_cert_peer_profile_name in etcd_cert_ca_config.signing.profiles
-        fail_msg: "Peer profile with name {{ etcd_cert_peer_profile_name }} is not defined in config"
-      when: etcd_cert_peer_profile_name is defined
-
-- name: Client checks
-  block:
-    - name: Check client profile
-      ansible.builtin.assert:
-        that:
-          - etcd_cert_client_profile_name in etcd_cert_ca_config.signing.profiles
-        fail_msg: "Client profile with name {{ etcd_cert_client_profile_name }} is not defined in config"
-      when: etcd_cert_client_profile_name is defined
+- name: Check if required profiles are exist
+  ansible.builtin.assert:
+    that:
+      - item.profile_name in etcd_cert_ca_config.signing.profiles
+  loop: "{{ etcd_cert_matrix }}"
