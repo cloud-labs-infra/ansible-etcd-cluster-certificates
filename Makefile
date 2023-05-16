@@ -1,5 +1,6 @@
 init:
-	pip install ansible molecule 'molecule[docker]' ansible-lint
+	python3 -m pip install --upgrade pip
+	python3 -m pip install -r requirements.txt
 
 # https://github.com/docker/for-mac/issues/6073#issuecomment-1018793677
 init-configure-sysfs-for-mac:
@@ -10,15 +11,11 @@ init-configure-sysfs-for-mac:
 	  sponge ~/Library/Group\ Containers/group.com.docker/settings.json
 	  open --background -a Docker
 
-init-mac:
-	init
-	init-configure-sysfs-for-mac
+init-mac: init init-configure-sysfs-for-mac
 
-verify:
-	for env in default multi-node ; do \
-	  echo "Trying to test ${env} scenario" ; \
-	  molecule create -s "${env}" ; \
-	  molecule converge -s "${env}" ; \
-	  molecule verify -s "${env}" ; \
-	  echo "Testing ${env} scenario is finished" ; \
-	done
+# test every scenario with test_sequence from ../../molecule/default/molecule.yml
+test:
+	molecule test --all
+
+lint:
+	molecule lint
