@@ -28,3 +28,4 @@
     chdir: "{{ etcd_cert_dir }}"
   when: not item.stat.exists
   loop: "{{ server_cert.results }}"
+  changed_when: false
