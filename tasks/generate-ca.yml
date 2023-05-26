@@ -12,7 +12,9 @@
     - ca-csr.json
     - ca-config.json
 
-- name: Generate CA certificate on the first node of {{ etcd_cert_default_inventory_group_name }} inventory group
+- name: Generate CA certificate on the first node of inventory group {{ etcd_cert_default_inventory_group_name }}
+  delegate_to: "{{ groups[etcd_cert_default_inventory_group_name][0] }}"
+  when: inventory_hostname == groups[etcd_cert_default_inventory_group_name][0]
   block:
     - name: Check if CA certificate exists
       ansible.builtin.stat:
@@ -26,8 +28,7 @@
       args:
         chdir: "{{ etcd_cert_dir }}"
       when: not ca_cert.stat.exists
-  delegate_to: "{{ groups[etcd_cert_default_inventory_group_name][0] }}"
-  when: inventory_hostname == groups[etcd_cert_default_inventory_group_name][0]
+      changed_when: false
 
 - name: Fetch CA certificate key pair from the remote with reference to other hosts
   ansible.builtin.slurp:
@@ -38,7 +39,7 @@
   register: etcd_ca_certs
   delegate_to: "{{ groups[etcd_cert_default_inventory_group_name][0] }}"
 
-- name: Copy CA cert to each host except first in {{ etcd_cert_default_inventory_group_name }} inventory group
+- name: Copy CA cert to each host except first in inventory group {{ etcd_cert_default_inventory_group_name }}
   ansible.builtin.copy:
     content: "{{ item.content | b64decode }}"
     dest: "{{ etcd_cert_dir }}/{{ item.item }}"

@@ -2,19 +2,21 @@
 
 galaxy_info:
   role_name: etcd_cluster_certificates
-  author: cloud_labs
+  author: cloudlabsinfra
   description: Ansible role for managing SSL certificates bunch for multinode ETCD cluster
   company: Cloud Labs Shared Infrastructure
-
-  license: Apache-2.0
-
-  min_ansible_version: 2.10
+  license: Apache 2.0
+  min_ansible_version: '2.1'
 
   platforms:
     - name: Ubuntu
       versions:
-        - 20.04
+        - focal  # 20.04
 
-  galaxy_tags: []
-
-dependencies: []
+  galaxy_tags:
+    - etcd
+    - kubernetes
+    - k8s
+    - tls
+    - ssl
+    - certificates

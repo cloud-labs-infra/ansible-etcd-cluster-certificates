@@ -1,0 +1,49 @@
+name: "Release"
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run-tests:
+    name: "Run tests"
+    uses: ./.github/workflows/tests.yml
+    secrets: inherit
+
+  release:
+    needs: run-tests
+    name: "Release"
+    runs-on: ubuntu-20.04
+    permissions: write-all
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Release
+        uses: cycjimmy/semantic-release-action@v3
+        with:
+          semantic_version: 18.0.0
+          extra_plugins: |
+            @semantic-release/changelog@6.0.0
+            @semantic-release/git@10.0.0
+            conventional-changelog-conventionalcommits@4.6.3
+
+  release-galaxy:
+    needs: release
+    name: "Release to Galaxy"
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install Ansible
+        run: |
+          pip3 install ansible-core
+
+      - name: Trigger import to Galaxy
+        run: |
+          ansible-galaxy role import \
+            --api-key ${{ secrets.ANSIBLE_GALAXY_API_KEY }} \
+            $(echo ${{ github.repository }} | sed 's/\// /')
