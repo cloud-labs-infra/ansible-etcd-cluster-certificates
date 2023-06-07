@@ -13,6 +13,6 @@
   roles:
     - { role: andrewrothstein.cfssl }
   tasks:
-    - name: "Include cloud_labs.etcd_cluster_certificates"
+    - name: "Include cloudlabsinfra.etcd_cluster_certificates"
       ansible.builtin.include_role:
-        name: "cloud_labs.etcd_cluster_certificates"
+        name: "cloudlabsinfra.etcd_cluster_certificates"
