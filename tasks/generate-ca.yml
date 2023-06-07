@@ -29,6 +29,13 @@
       when: not ca_cert.stat.exists
       changed_when: false
 
+    - name: Set hostname of initial master for other nodes
+      ansible.builtin.set_fact:
+        k8s_cluster_init_main_node_hostname: "{{ inventory_hostname }}"
+      delegate_to: "{{ item }}"
+      delegate_facts: true
+      loop: "{{ ansible_play_hosts }}"
+
 - name: Fetch CA certificate key pair from the remote with reference to other hosts
   ansible.builtin.slurp:
     src: "{{ etcd_cert_dir }}/{{ item }}"
@@ -36,7 +43,7 @@
     - ca.pem
     - ca-key.pem
   register: etcd_ca_certs
-  when: etcd_cert_init_ca_node | bool
+  delegate_to: "{{ k8s_cluster_init_main_node_hostname }}"
 
 - name: Copy CA cert to each host except first in inventory group {{ etcd_cert_default_inventory_group_name }}
   ansible.builtin.copy:
