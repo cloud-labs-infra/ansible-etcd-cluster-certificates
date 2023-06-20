@@ -12,7 +12,7 @@
     - ca-csr.json
     - ca-config.json
 
-- name: Generate CA certificate on the first node of inventory group {{ etcd_cert_default_inventory_group_name }}
+- name: Generate CA certificate on the first node
   when: etcd_cert_init_ca_node | bool
   block:
     - name: Check if CA certificate exists
@@ -45,7 +45,7 @@
   register: etcd_ca_certs
   delegate_to: "{{ k8s_cluster_init_main_node_hostname }}"
 
-- name: Copy CA cert to each host except first in inventory group {{ etcd_cert_default_inventory_group_name }}
+- name: Copy CA cert to each host except firstnode
   ansible.builtin.copy:
     content: "{{ item.content | b64decode }}"
     dest: "{{ etcd_cert_dir }}/{{ item.item }}"
