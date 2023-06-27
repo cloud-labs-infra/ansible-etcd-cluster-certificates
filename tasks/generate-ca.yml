@@ -31,7 +31,7 @@
 
     - name: Set hostname of initial master for other nodes
       ansible.builtin.set_fact:
-        k8s_cluster_init_main_node_hostname: "{{ inventory_hostname }}"
+        etcd_cert_init_ca_node_hostname: "{{ inventory_hostname }}"
       delegate_to: "{{ item }}"
       delegate_facts: true
       loop: "{{ ansible_play_hosts }}"
@@ -43,7 +43,7 @@
     - ca.pem
     - ca-key.pem
   register: etcd_ca_certs
-  delegate_to: "{{ k8s_cluster_init_main_node_hostname }}"
+  delegate_to: "{{ etcd_cert_init_ca_node_hostname }}"
 
 - name: Copy CA cert to each host except firstnode
   ansible.builtin.copy:
