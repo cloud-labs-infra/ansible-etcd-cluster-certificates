@@ -19,6 +19,10 @@ platforms:
     hostname: etcd-cert-instance-03
 provisioner:
   name: ansible
+  inventory:
+    host_vars:
+      etcd-cert-instance-01:
+        etcd_cert_init_ca_node: true
 verifier:
   name: ansible
 lint: |

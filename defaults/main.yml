@@ -3,7 +3,7 @@
 etcd_cert_user: root
 etcd_cert_group: root
 etcd_cert_dir: /etc/ssl/private/
-etcd_cert_default_inventory_group_name: etcd
+etcd_cert_init_ca_node: false
 
 ## CA configuration
 
